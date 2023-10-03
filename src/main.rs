@@ -28,6 +28,7 @@ fn main() -> Result<(), String> {
 
     let mut frame_start = SystemTime::now();
     let mut tick_start = SystemTime::now();
+    let mut play = true;
     'running: loop {
         for event in event_pump.poll_iter() {
             match event {
@@ -49,20 +50,23 @@ fn main() -> Result<(), String> {
         }
         frame_start = SystemTime::now();
 
-        if dt_tick >= TICK {
+        if dt_tick >= TICK && play {
             let (gameover, kp) = game.tick();
 
+
             draw_cell(&mut canvas, kp.old_tail.0, kp.old_tail.1, Color::BLACK)?;
-            draw_cell(&mut canvas, kp.old_head.0, kp.old_head.1, Color::RGB(0, 255, 0))?;
-            draw_cell(&mut canvas, kp.new_head.0, kp.new_head.1, Color::RGB(0, 180, 0))?;
+            if gameover {
+                draw_cell(&mut canvas, kp.old_head.0, kp.old_head.1, Color::RGB(180, 0, 0))?;
+                play = false;
+            } else {
+                draw_cell(&mut canvas, kp.old_head.0, kp.old_head.1, Color::RGB(0, 255, 0))?;
+                draw_cell(&mut canvas, kp.new_head.0, kp.new_head.1, Color::RGB(0, 180, 0))?;
+            }
             draw_cell(&mut canvas, kp.food.0, kp.food.1, Color::RED)?;
             canvas.present();
 
             tick_start = SystemTime::now();
         }
-
-        // canvas.clear();
-        // canvas.present();
     }
 
     Ok(())

@@ -27,7 +27,7 @@ impl Game {
         }
     }
 
-    /// **Returns**: (gameover, old_tail, new_head, food)
+    /// **Returns**: (gameover, keypoints)
     pub fn tick(&mut self) -> (bool, GameKeyPoints) {
         let old_head = self.snake.back().unwrap().clone();
         let mut new_head = (old_head.0 + 1, old_head.1);
