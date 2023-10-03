@@ -54,15 +54,21 @@ fn main() -> Result<(), String> {
             let (gameover, kp) = game.tick();
 
 
-            draw_cell(&mut canvas, kp.old_tail.0, kp.old_tail.1, Color::BLACK)?;
+            if let Some(old_tail) = kp.old_tail {
+                draw_cell(&mut canvas, old_tail.0, old_tail.1, Color::BLACK)?;
+            }
+
+            draw_cell(&mut canvas, kp.old_head.0, kp.old_head.1, Color::RGB(0, 255, 0))?;
+
             if gameover {
                 draw_cell(&mut canvas, kp.old_head.0, kp.old_head.1, Color::RGB(180, 0, 0))?;
                 play = false;
             } else {
-                draw_cell(&mut canvas, kp.old_head.0, kp.old_head.1, Color::RGB(0, 255, 0))?;
                 draw_cell(&mut canvas, kp.new_head.0, kp.new_head.1, Color::RGB(0, 180, 0))?;
             }
+
             draw_cell(&mut canvas, kp.food.0, kp.food.1, Color::RED)?;
+
             canvas.present();
 
             tick_start = SystemTime::now();
