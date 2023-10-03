@@ -43,7 +43,7 @@ fn main() -> Result<(), String> {
         }
 
         const FRAME: Duration = Duration::new(0, 1_000_000_000u32 / 60); // target 60 FPS
-        const TICK: Duration = Duration::new(0, 250_000_000u32); // target 60 FPS
+        const TICK: Duration = Duration::new(0, 125_000_000u32); // target 60 FPS
 
         let now = SystemTime::now();
         let dt_frame = now.duration_since(frame_start).map_err(|e| e.to_string())?;
