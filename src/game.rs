@@ -30,7 +30,22 @@ impl Game {
     /// **Returns**: (gameover, old_tail, new_head, food)
     pub fn tick(&mut self) -> (bool, GameKeyPoints) {
         let old_head = self.snake.back().unwrap().clone();
-        let new_head = (old_head.0 + 1, old_head.1);
+        let mut new_head = (old_head.0 + 1, old_head.1);
+
+        if new_head.0 < 0 {
+            new_head.0 = self.w as i32 - 1;
+        } else if new_head.0 >= self.w as i32 {
+            new_head.0 = 0;
+        }
+
+        if new_head.1 < 0 {
+            new_head.1 = self.h as i32 - 1;
+        } else if new_head.1 >= self.h as i32 {
+            new_head.1 = 0;
+        }
+
+        let new_head = new_head; // make new_head immutable
+
         self.snake.push_back(new_head);
 
         let old_tail = self.snake.pop_front().unwrap();
