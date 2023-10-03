@@ -2,8 +2,9 @@ mod game;
 
 use std::time::{Duration, SystemTime};
 
-use game::Game;
 use sdl2::{pixels::Color, keyboard::Keycode, event::Event, rect::Rect, render::Canvas, video::Window};
+
+use game::Game;
 
 const CELL_SIZE: u32 = 32;
 
@@ -49,10 +50,12 @@ fn main() -> Result<(), String> {
         frame_start = SystemTime::now();
 
         if dt_tick >= TICK {
-            let (gameover, old_tail, new_head) = game.tick();
+            let (gameover, kp) = game.tick();
 
-            draw_cell(&mut canvas, old_tail.0, old_tail.1, Color::BLACK)?;
-            draw_cell(&mut canvas, new_head.0, new_head.1, Color::GREEN)?;
+            draw_cell(&mut canvas, kp.old_tail.0, kp.old_tail.1, Color::BLACK)?;
+            draw_cell(&mut canvas, kp.old_head.0, kp.old_head.1, Color::RGB(0, 255, 0))?;
+            draw_cell(&mut canvas, kp.new_head.0, kp.new_head.1, Color::RGB(0, 180, 0))?;
+            draw_cell(&mut canvas, kp.food.0, kp.food.1, Color::RED)?;
             canvas.present();
 
             tick_start = SystemTime::now();
