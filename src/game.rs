@@ -1,5 +1,7 @@
 use std::collections::LinkedList;
 
+use rand::Rng;
+
 pub struct GameKeyPoints {
     pub old_tail: Option<(i32, i32)>, // None on growth
     pub old_head: (i32, i32),
@@ -55,6 +57,11 @@ impl Game {
 
         // growth
         let old_tail = if new_head == self.food {
+            let mut rng = rand::thread_rng();
+            self.food = (
+                rng.gen_range(0..self.w) as i32,
+                rng.gen_range(0..self.h) as i32,
+            );
             None
         } else {
             Some(self.snake.pop_front().unwrap())
