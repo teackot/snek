@@ -34,6 +34,10 @@ fn main() -> Result<(), String> {
             match event {
                 Event::Quit { .. } |
                 Event::KeyDown {keycode: Some(Keycode::Escape),..} => break 'running,
+                Event::KeyDown {keycode: Some(Keycode::Up),..} => game.set_direction((0, -1)),
+                Event::KeyDown {keycode: Some(Keycode::Down),..} => game.set_direction((0, 1)),
+                Event::KeyDown {keycode: Some(Keycode::Left),..} => game.set_direction((-1, 0)),
+                Event::KeyDown {keycode: Some(Keycode::Right),..} => game.set_direction((1, 0)),
                 _ => (),
             }
         }

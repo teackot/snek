@@ -12,7 +12,8 @@ pub struct Game {
     food: (i32, i32),
     w: u32,
     h: u32,
-    direction: (i32, i32)
+    direction: (i32, i32),
+    tmp_direction: (i32, i32),
 }
 
 impl Game {
@@ -23,11 +24,14 @@ impl Game {
             w,
             h,
             direction: (1, 0),
+            tmp_direction: (1, 0),
         }
     }
 
     /// **Returns**: (gameover, keypoints)
     pub fn tick(&mut self) -> (bool, GameKeyPoints) {
+        self.direction = self.tmp_direction;
+
         let old_head = self.snake.back().unwrap().clone();
         let mut new_head = (old_head.0 + self.direction.0, old_head.1 + self.direction.1);
 
@@ -64,4 +68,12 @@ impl Game {
 
     pub fn width(&self) -> u32 { self.w }
     pub fn height(&self) -> u32 { self.h }
+
+    pub fn set_direction(&mut self, direction: (i32, i32)) {
+        if direction.0 == -self.direction.0 && direction.1 == -self.direction.1 {
+            return;
+        }
+
+        self.tmp_direction = direction;
+    }
 }
